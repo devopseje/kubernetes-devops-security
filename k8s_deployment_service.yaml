@@ -16,7 +16,7 @@ spec:
         app: devsecops
     spec:
       containers:
-      - image: replace
+      - image: devopseje/numeric-app-devsecops:11
         name: devsecops-container
 ---
 apiVersion: v1
