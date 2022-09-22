@@ -21,12 +21,20 @@ pipeline {
             }
              }
 
+        stage('Docker Loging'){
+            steps {
+                withCredentials([usernamePassword(credentialsID: 'Dockerhub-key', passwordVariable: 'password', usernameVariable: 'username')]){
+                    sh 'docker login -u $username -p $password'
+                }
+            }
+        }     
+
 
         stage('Docker  build and Push'){
             steps {
                 sh 'printenv'
-                sh 'docker build -t devopseje/numeric-app-devsecops:""$GIT_COMMIT"" .'
-                sh 'docker push  devopseje/numeric-app-devsecops:""$GIT_COMMIT""'
+                sh 'docker build -t devopseje/numeric-app-devsecops:""$BUILD_NUMBER"" .'
+                sh 'docker push devopseje/numeric-app-devsecops:""$BUILD_NUMBER""'
             }
         }     
 
