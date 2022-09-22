@@ -35,6 +35,7 @@ pipeline {
         stage('Kubernetes Deployment'){
             steps{
                 withKubeConfig([credentialsId: 'kubeconfig']){
+                    sh 'sed -i 's#replace#devopseje/numeric-app-devsecops:${BUILD_NUMBER}#g' k8s_deployment_service.yaml'
                     sh 'kubectl apply -f k8s_deployment_service.yaml'
                 }
             }
