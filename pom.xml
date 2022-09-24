@@ -80,7 +80,7 @@
 					</dependency>
 				</dependencies>
 				<configuration>
-					<mutationThreshold>60</mutationThreshold>
+					<mutationThreshold>75</mutationThreshold>
 					<outputFormats>
 						<outputFormat>XML</outputFormat>
 						<outputFormat>HTML</outputFormat>
