@@ -78,7 +78,7 @@
 					</dependency>
 				</dependencies>
 				<configuration>
-					<mutationTreshold>70</mutationTreshold>
+					<mutationThreshold>70</mutationThreshold>
 					<outputFormats>
 						<outputFormat>XML</outputFormat>
 						<outputFormat>HTML</outputFormat>
