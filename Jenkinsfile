@@ -30,6 +30,15 @@ pipeline {
                     pitmutation mutationStatsFile: '**/target/pit-reports/**/mutations.xml'
                 }
             }
+        }
+
+        stage('Deploy to sonarqube'){
+            step{         
+           Sh  "mvn clean verify sonar:sonar \
+            -Dsonar.projectKey=numeric-application \
+            -Dsonar.host.url=http://devsecops-ejemaster.eastus.cloudapp.azure.com:9000 \
+            -Dsonar.login=sqp_88d8e67ac3344178ffd467661f636063842715a4"
+             }
         }     
         stage('Docker  build and Push'){
             steps {
@@ -37,7 +46,7 @@ pipeline {
                 sh 'printenv'
                 sh 'docker build -t devopseje/numeric-app-devsecops:""$BUILD_NUMBER"" .'
                 sh 'docker push devopseje/numeric-app-devsecops:""$BUILD_NUMBER""'
-                sh 'docker rmi devopseje/numeric-app-devsecops:""$BUILD_NUMBER""  --force'
+                sh 'docker rmi devopseje/numeric-app-devsecops:"$BUILD_NUMBER"  --force'
                 }
 
             }
