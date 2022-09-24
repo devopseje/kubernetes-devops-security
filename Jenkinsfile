@@ -36,6 +36,16 @@ pipeline {
             steps{
                 sh "mvn clean verify sonar:sonar -Dsonar.projectKey=numeric-application -Dsonar.host.url=http://devsecops-ejemaster.eastus.cloudapp.azure.com:9000 -Dsonar.login=sqp_88d8e67ac3344178ffd467661f636063842715a4 "
              }
+        }
+
+        stage("Quality Gate") {
+            steps {
+                timeout(time: 3, unit: 'MINUTE') {
+                    // Parameter indicates whether to set pipeline to UNSTABLE if Quality Gate fails
+                    // true = set pipeline to UNSTABLE, false = don't
+                    waitForQualityGate abortPipeline: true
+                }
+            }
         }     
         stage('Docker  build and Push'){
             steps {
