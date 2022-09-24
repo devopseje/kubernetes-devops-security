@@ -33,7 +33,7 @@ pipeline {
         }
 
         stage('Deploy to sonarqube'){
-            step{         
+            steps{
                 sh "mvn clean verify sonar:sonar -Dsonar.projectKey=numeric-application -Dsonar.host.url=http://devsecops-ejemaster.eastus.cloudapp.azure.com:9000 -Dsonar.login=88d8e67ac3344178ffd467661f636063842715a4 "
              }
         }     
