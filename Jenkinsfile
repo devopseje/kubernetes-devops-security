@@ -37,18 +37,15 @@ pipeline {
                 withSonarQubeEnv('sonarqube'){
                 sh "mvn sonar:sonar -Dsonar.projectKey=numeric-application -Dsonar.host.url=http://devsecops-ejemaster.eastus.cloudapp.azure.com:9000  "
              }
-            }
-        }
-
-        stage("Quality Gate") {
-            steps {
-                timeout(time: 3, unit: 'MINUTES') {
-                    // Parameter indicates whether to set pipeline to UNSTABLE if Quality Gate fails
-                    // true = set pipeline to UNSTABLE, false = don't
+            timeout(time: 2, unit: 'MINUTES') {
+                script{
                     waitForQualityGate abortPipeline: true
                 }
             }
-        }     
+            }
+        }
+
+    
         stage('Docker  build and Push'){
             steps {
                 withDockerRegistry([credentialsId: 'Dockerhub-key', url:""]) {              
