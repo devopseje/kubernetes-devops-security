@@ -34,8 +34,10 @@ pipeline {
 
         stage('Deploy to sonarqube'){
             steps{
-                sh "mvn clean verify sonar:sonar -Dsonar.projectKey=numeric-application -Dsonar.host.url=http://devsecops-ejemaster.eastus.cloudapp.azure.com:9000 -Dsonar.login=sqp_dc1a2123f92f3fdff10cb0044ebe7369116dfd58 "
+                withSonarQubeEnv('sonarqube'){
+                sh "mvn sonar:sonar "
              }
+            }
         }
 
         stage("Quality Gate") {
