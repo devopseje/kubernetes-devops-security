@@ -35,7 +35,7 @@ pipeline {
         stage('Deploy to sonarqube'){
             steps{
                 withSonarQubeEnv('sonarqube'){
-                sh "mvn sonar:sonar -Dsonar.projectKey=numeric-application
+                sh "mvn sonar:sonar -Dsonar.projectKey=numeric-application \
                  -Dsonar.host.url=http://devsecops-ejemaster.eastus.cloudapp.azure.com:9000  "
              }
             }
