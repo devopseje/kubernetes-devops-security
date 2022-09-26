@@ -71,9 +71,9 @@ pipeline {
             steps {
                 withDockerRegistry([credentialsId: 'Dockerhub-key', url:""]) {              
                 sh 'printenv'
-                sh 'docker build -t devopseje/numeric-app-devsecops:""$BUILD_NUMBER"" .'
+                sh 'sudo docker build -t devopseje/numeric-app-devsecops:""$BUILD_NUMBER"" .'
                 sh 'docker push devopseje/numeric-app-devsecops:""$BUILD_NUMBER""'
-                sh 'docker rmi devopseje/numeric-app-devsecops:"$BUILD_NUMBER"  --force'
+                sh 'docker rmi devopseje/numeric-app-devsecops:"$BUILD_NUMBER" -f'
                 }
 
             }
