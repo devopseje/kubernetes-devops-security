@@ -76,9 +76,15 @@ pipeline {
                 sh 'printenv'
                 sh 'sudo docker build -t devopseje/numeric-app-devsecops:""$BUILD_NUMBER"" .'
                 sh 'docker push devopseje/numeric-app-devsecops:""$BUILD_NUMBER""'
-                sh 'docker rmi devopseje/numeric-app-devsecops:"$BUILD_NUMBER" -f'
+                sh 'docker rmi devopseje/numeric-app-devsecops:"$BUILD_NUMBER" '
                 }
 
+            }
+        }
+
+        stage('Vulnerability Scan - kubernetes'){
+            steps {
+                sh 'docker run --rm -v $(pwd):/project openpolicyagent/conftest test --policy opa-k8s-security.rego k8s_deployment_service.yaml'
             }
         }
 
