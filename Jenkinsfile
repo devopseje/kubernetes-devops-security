@@ -1,6 +1,16 @@
 pipeline {
   agent any
 
+  environment {
+    deploymentName = "devsecops"
+    containerName = "devsecops-container"
+    serviceName = "devsecops-svc"
+    imageName = "devopseje/numeric-app-devsecops:${GIT_COMMIT}"
+    applicationURL = "http://devsecops-demo.eastus.cloudapp.azure.com/"
+    applicationURI = "/increment/99"
+  }
+
+
   stages {
       stage('Build Artifact') {
             steps {
@@ -89,14 +99,32 @@ pipeline {
             }
         }
 
-        stage('Kubernetes Deployment'){
-            steps{
-                withKubeConfig([credentialsId: 'kubeconfig']){
-                    sh "sed -i 's#replace#devopseje/numeric-app-devsecops:${BUILD_NUMBER}#g' k8s_deployment_service.yaml"
-                    sh 'kubectl apply -f k8s_deployment_service.yaml'
+            // deploy to kubernete sans verifier si l´application est en status deploy.
+   //     stage('Kubernetes Deployment'){
+   //         steps{
+  //              withKubeConfig([credentialsId: 'kubeconfig']){
+  //                  sh "sed -i 's#replace#devopseje/numeric-app-devsecops:${BUILD_NUMBER}#g' k8s_deployment_service.yaml"
+ //                   sh 'kubectl apply -f k8s_deployment_service.yaml'
+ //               }
+ //           }
+//        } 
+
+   stage('K8s-Deployment -Dev'){
+        steps {
+            parallel(l
+                "Deployment to k8s-server": {
+                    withKubeConfig([credentialsId: 'kubeconfig']){
+                        sh 'bash k8s-deployment.sh'
+                    }
+                },
+                "Rollout status": {
+                    withKubeConfig([credentialsId: 'kubeconfig']){
+                        sh 'bash k8s-deployment-rollout-status.sh'
+                    }
                 }
-            }
-        }    
+            )
+        }
+   }
 
     }
     
