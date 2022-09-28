@@ -111,7 +111,7 @@ pipeline {
 
    stage('K8s-Deployment -Dev'){
         steps {
-            parallel(l
+            parallel(
                 "Deployment to k8s-server": {
                     withKubeConfig([credentialsId: 'kubeconfig']){
                         sh 'bash k8s-deployment.sh'
