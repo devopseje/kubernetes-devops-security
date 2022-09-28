@@ -93,11 +93,25 @@ pipeline {
             }
         }
 
-        stage('Vulnerability Scan - kubernetes'){
-            steps {
+        // stage('Vulnerability Scan - kubernetes'){
+        //     steps {
+        //         sh 'docker run --rm -v $(pwd):/project openpolicyagent/conftest test --policy opa-k8s-security.rego k8s_deployment_service.yaml'
+        //     }
+        // }
+
+        stage('Vulnerability Scan - Kubernetes') {
+          steps {
+            parallel(
+            "OPA Scan": {
                 sh 'docker run --rm -v $(pwd):/project openpolicyagent/conftest test --policy opa-k8s-security.rego k8s_deployment_service.yaml'
+            },
+            "Kubesec Scan": {
+                sh "bash kubesec-scan.sh"
             }
+            )
         }
+        }
+
 
             // deploy to kubernete sans verifier si l´application est en status deploy.
    //     stage('Kubernetes Deployment'){
