@@ -143,22 +143,22 @@ pipeline {
         }
    }
     
-    stage('Integrqation Tests - DEV'){
-        steps{
-            script{
-                try {
-                    withKubeConfig([credentialsId: 'kubeconfig']){
-                        sh 'bash integration-test.sh'
-                    }
-                } catch (e) {
-                    withKubeConfig([credentialsId: 'kubecon']){
-                        sh "kubectl -n default rollout undo deploy ${deploymenName}"
-                    }
-                    throw e
-                }
-            }
-        }
-    }
+    // stage('Integrqation Tests - DEV'){
+    //     steps{
+    //         script{
+    //             try {
+    //                 withKubeConfig([credentialsId: 'kubeconfig']){
+    //                     sh 'bash integration-test.sh'
+    //                 }
+    //             } catch (e) {
+    //                 withKubeConfig([credentialsId: 'kubecon']){
+    //                     sh "kubectl -n default rollout undo deploy ${deploymenName}"
+    //                 }
+    //                 throw e
+    //             }
+    //         }
+    //     }
+    // }
 
 
     }
