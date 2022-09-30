@@ -20,6 +20,7 @@ then
             echo "Increment Test Passed"
         else
             echo "Increment Test Failed"
+            echo "$response"
             exit 1;
     fi;
 
