@@ -6,7 +6,7 @@ pipeline {
     containerName = "devsecops-container"
     serviceName = "devsecops-svc"
     imageName = "devopseje/numeric-app-devsecops:${BUILD_NUMBER}"
-    applicationURL = "http://devsecops-demo.eastus.cloudapp.azure.com/"
+    applicationURL = "http://devsecops-demo.eastus.cloudapp.azure.com"
     applicationURI = "/increment/99"
   }
 
@@ -142,6 +142,24 @@ pipeline {
             )
         }
    }
+    
+    stage('Integrqation Tests - DEV'){
+        steps{
+            scripts{
+                try {
+                    withKubeConfig([credentialsId: 'kubeconfig']){
+                        sh 'bash integration-test.sh'
+                    }
+                } catch (e) {
+                    withKubeConfig([credentialsId: 'kubecon']){
+                        sh "kubectl -n default rollout undo deploy ${deploymenName}"
+                    }
+                    throw e
+                }
+            }
+        }
+    }
+
 
     }
     
