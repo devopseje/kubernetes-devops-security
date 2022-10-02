@@ -177,7 +177,10 @@ pipeline {
         }
 
         stage('Send Slack Notification'){
+            steps {
+            
             sendNotification currentBuild.result
+            }
         }
 
 
